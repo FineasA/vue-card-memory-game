@@ -19,6 +19,11 @@
 export default {
   data() {
     return {
+      currentlySelected: [],
+      correctPairs: [],
+      phaseOne: true,
+      phaseTwo: false,
+      isCorrect: false,
       cards: [],
       imgURLS: [
         {
@@ -76,9 +81,39 @@ export default {
       }
     },
     flipCard(index) {
-      console.log(this.cards[index]);
-      console.log(index);
-      this.cards[index].hidden = false;
+      //store the first click in a variable, then compare to next click
+      if (this.phaseOne) {
+        this.cards[index].hidden = false;
+        this.currentlySelected.push(this.cards[index].cardId);
+        this.phaseOne = false;
+        this.phaseTwo = true;
+        console.log("Currently Selected: ", this.currentlySelected);
+        console.log("Phase one complete");
+      } else if (this.phaseTwo) {
+        this.cards[index].hidden = false;
+        this.currentlySelected.push(this.cards[index].cardId);
+        if (this.currentlySelected[0] === this.currentlySelected[1]) {
+          this.correctPairs.push([
+            this.cards[this.currentlySelected[0]],
+            this.cards[this.currentlySelected[1]]
+          ]);
+        }
+        if (this.currentlySelected[0] !== this.currentlySelected[1]) {
+          //   this.cards[this.currentlySelected[1]].hidden = false;
+          setTimeout(() => {
+            console.log("hello???");
+            console.log("1: ", this.cards[this.currentlySelected[0]]);
+            console.log("2: ", this.cards[this.currentlySelected[1]]);
+            this.cards[this.currentlySelected[0]].hidden = true;
+            this.cards[this.currentlySelected[1]].hidden = true;
+            this.currentlySelected.length = 0;
+          }, 1500);
+        }
+        this.phaseOne = true;
+        this.phaseTwo = false;
+        console.log("Currently Selected: ", this.currentlySelected);
+        console.log("Phase two complete");
+      }
     }
   },
   created() {
