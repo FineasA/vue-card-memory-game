@@ -2,12 +2,13 @@
   <div>
     <b-card-group columns class="card-group">
       <b-card
-        :img-src="card.imgUrl"
+        :img-src="card.hidden ? cardBackURL : card.imgUrl"
         class="player-card"
         style="min-width: 16rem;"
         v-for="(card, index) in cards"
         :key="index"
         no-body
+        @click="flipCard(index)"
       >
       </b-card>
     </b-card-group>
@@ -44,19 +45,26 @@ export default {
           zion:
             "https://images.unsplash.com/photo-1475351177616-1e5e440dccef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
         }
-      ]
+      ],
+      cardBackURL:
+        "https://images.unsplash.com/photo-1574110537361-ff1948fc4a57?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
     };
   },
   methods: {
     createCards() {
+      //create two identical card objects that are distinct and point to different references
       for (let i = 0; i < this.imgURLS.length; i++) {
-        let card = {
+        let cardOne = {
           hidden: true,
           cardId: i,
           imgUrl: this.imgURLS[i].zion
         };
-        // cardCouplet.push(card, card);
-        this.cards.push(card, card);
+        let cardTwo = {
+          hidden: true,
+          cardId: i,
+          imgUrl: this.imgURLS[i].zion
+        };
+        this.cards.push(cardOne, cardTwo);
       }
       this.shuffleCards();
       console.log(this.cards);
@@ -66,6 +74,11 @@ export default {
         let j = Math.floor(Math.random() * (i + 1));
         [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
       }
+    },
+    flipCard(index) {
+      console.log(this.cards[index]);
+      console.log(index);
+      this.cards[index].hidden = false;
     }
   },
   created() {
@@ -74,4 +87,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.player-card-hidden {
+  visibility: hidden;
+  border: 2px solid black;
+}
+</style>
