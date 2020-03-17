@@ -1,28 +1,27 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="container">
+    <div class="row justify-content-center">
+      <h1 class="title">Card Memory Game</h1>
+    </div>
+    <hr />
+    <div class="row d-flex justify-content-justify">
+      <cards></cards>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Cards from "./components/Cards.vue";
 
 export default {
-  name: "App",
   components: {
-    HelloWorld
+    Cards
   }
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.title {
+  font-family: "Righteous", cursive;
 }
 </style>
