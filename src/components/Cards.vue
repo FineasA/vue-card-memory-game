@@ -105,6 +105,7 @@ export default {
           setTimeout(() => {
             console.log("cards should flip");
             this.cards[this.previous].hidden = true;
+            //i have no idea why mostRecent is not changing to hidden
             this.cards[this.mostRecent].hidden = true;
           }, 1500);
         }
