@@ -19,12 +19,14 @@
 export default {
   data() {
     return {
-      currentlySelected: [],
+      previous: null,
+      mostRecent: null,
       correctPairs: [],
       phaseOne: true,
       phaseTwo: false,
       isCorrect: false,
       cards: [],
+      hidden: true,
       imgURLS: [
         {
           zion:
@@ -60,18 +62,18 @@ export default {
       //create two identical card objects that are distinct and point to different references
       for (let i = 0; i < this.imgURLS.length; i++) {
         let cardOne = {
-          hidden: true,
+          hidden: this.hidden,
           cardId: i,
           imgUrl: this.imgURLS[i].zion
         };
         let cardTwo = {
-          hidden: true,
+          hidden: this.hidden,
           cardId: i,
           imgUrl: this.imgURLS[i].zion
         };
         this.cards.push(cardOne, cardTwo);
       }
-      this.shuffleCards();
+      // this.shuffleCards();
       console.log(this.cards);
     },
     shuffleCards() {
@@ -84,39 +86,33 @@ export default {
       //store the first click in a variable, then compare to next click
       if (this.phaseOne) {
         this.cards[index].hidden = false;
-        this.currentlySelected.push(this.cards[index].cardId);
+        this.previous = this.cards[index].cardId;
+        console.log(this.previous);
         this.phaseOne = false;
         this.phaseTwo = true;
-        console.log("Currently Selected: ", this.currentlySelected);
-        console.log("Phase one complete");
       } else if (this.phaseTwo) {
         this.cards[index].hidden = false;
-        this.currentlySelected.push(this.cards[index].cardId);
-        if (this.currentlySelected[0] === this.currentlySelected[1]) {
-          this.correctPairs.push([
-            this.cards[this.currentlySelected[0]],
-            this.cards[this.currentlySelected[1]]
-          ]);
-        }
-        if (this.currentlySelected[0] !== this.currentlySelected[1]) {
-          //   this.cards[this.currentlySelected[1]].hidden = false;
+        this.mostRecent = this.cards[index].cardId;
+        console.log(
+          "Previous: ",
+          this.previous,
+          "Most Recent: ",
+          this.mostRecent
+        );
+        //begin testing to see if matched
+        if (this.previous !== this.mostRecent) {
+          console.log("incorrect");
           setTimeout(() => {
-            console.log("hello???");
-            console.log("1: ", this.cards[this.currentlySelected[0]]);
-            console.log("2: ", this.cards[this.currentlySelected[1]]);
-            this.cards[this.currentlySelected[0]].hidden = true;
-            this.cards[this.currentlySelected[1]].hidden = true;
-            this.currentlySelected.length = 0;
+            console.log("cards should flip");
+            this.cards[this.previous].hidden = true;
+            this.cards[this.mostRecent].hidden = true;
           }, 1500);
         }
-        this.phaseOne = true;
-        this.phaseTwo = false;
-        console.log("Currently Selected: ", this.currentlySelected);
-        console.log("Phase two complete");
       }
     }
   },
   created() {
+    console.log("created");
     this.createCards();
   }
 };
